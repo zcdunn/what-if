@@ -1,0 +1,73 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+#search {
+    position:fixed;
+    display:block;
+    bottom:0;
+    right:0;
+    margin-right:40px;
+    margin-bottom:40px;
+    z-index:900;
+}
+
+header.mdl-layout__header {
+}
+
+.mdl-dialog {
+    max-width:20em;
+}
+
+.ref {
+    position:relative;
+    vertical-align:baseline;
+}
+
+.refnum {
+    position:relative;
+    left:2px;
+    bottom:1ex;
+    vertical-align:super;
+    font-size:.83em;
+    font-weight:bold;
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+.refbody {
+    display:none;
+    position:absolute;
+    left:25px;
+    bottom:5px;
+    border:1px solid;
+    padding:5px;
+    z-index:999;
+    overflow:auto;
+    background-color:#FFFFFF;
+    min-width:20em;
+    word-wrap:break-word;
+    line-height:1.5em;
+    font-size:.8em;
+}
+
+.entry h1 {
+    font-size:1.5em;
+    line-height:1.1em;
+    font-weight:700;
+}
+
+#question, p.question {
+    font-style:italic;
+}
+
+#attribute, p.attribute {
+    text-align:right;
+    margin-right:20%;
+}
+
+img.illustration, .section--header img {
+    display:block;
+    margin:0px auto;
+    max-width:100%;
+}
