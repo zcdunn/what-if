@@ -4,10 +4,8 @@ var cheerio = require('cheerio');
 var router = express.Router();
 
 var entries = [];
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-    readFeed('http://what-if.xkcd.com/feed.atom', function(err, articles) {
+function parseFeed(feedUrl) {
+    readFeed(feedUrl, function(err, articles) {
         if(err) throw err;
         entries = articles.map(function(curr) {
             var $ = cheerio.load(curr.content);
@@ -24,23 +22,17 @@ router.get('/', function(req, res, next) {
             curr.id = parseInt(curr.link.match(/\/(\d+)\//)[1]);
             return curr;
         });
-        res.render('index', {
-            title: 'What If?',
-            entries: entries.map(function(curr) {
-                // strip out content for index
-                return {
-                    title: curr.title,
-                    published: curr.published,
-                    link: curr.link,
-                    originalLink: curr.originalLink,
-                    snippet: curr.snippet,
-                    question: curr.question,
-                    attribute: curr.attribute,
-                    id: curr.id
-                };
-            })
-        });
     });
+}
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+    parseFeed('http://what-if.xkcd.com/feed.atom')
+    res.render('index', { title: 'What If?' });
+});
+
+router.get('/feed', function(req, res, next) {
+    res.json(entries);
 });
 
 router.get('/entry/:id', function(req, res, next) {
