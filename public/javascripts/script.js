@@ -1,4 +1,9 @@
-"use strict";
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/worker.js')
+        .then(reg => console.log('Registration succeeded. Scope is ' + reg.scope))
+        .catch(error => console.log('Registration failed with ' + error));
+};
+
 $(document).ready(function() {
     var feedPath = 'feed';
     var mq = window.matchMedia("(max-width: 1024px)");
