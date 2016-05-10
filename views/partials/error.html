@@ -1,0 +1,14 @@
+<section class="section--main">
+    <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp" ng-repeat="e in entries">
+        <div class="mdl-card mdl-cell mdl-cell--12-col">
+            <div class="mdl-card__supporting-text">
+                <h4>{{e.title}}</h4>
+                <p class="question" dynamic="e.question"></p>
+                <p class="attribute" ng-bind-html="e.attribute"></p>
+            </div>
+            <div class="mdl-card__actions">
+                <a ng-href="article/{{e.id}}" class="mdl-button mdl-color-text--primary">Read Answer</a><!-- mdl-color-text--accent -->
+            </div>
+        </div>
+    </section>
+</section>

@@ -4,60 +4,42 @@ var cheerio = require('cheerio');
 var router = express.Router();
 
 var entries = [];
-function parseFeed(feedUrl) {
-    readFeed(feedUrl, function(err, articles) {
-        if(err) throw err;
-        entries = articles.map(function(curr) {
-            var $ = cheerio.load(curr.content);
-            $('img').each(function() {
-                var src = 'https://what-if.xkcd.com' + $(this).attr('src');
-                $(this).attr('src', src);
-            });
-            $('.refnum').addClass('mdl-color-text--accent');
-            curr.content = $.html();
-            curr.question = $('p#question').html();
-            curr.attribute = $('p#attribute').text();
-            curr.originalLink = curr.link;
-            curr.link = curr.link.replace('http://what-if.xkcd.com', 'entry');
-            curr.id = parseInt(curr.link.match(/\/(\d+)\//)[1]);
-            return curr;
-        });
+function modifyEntry(entry) {
+    var $ = cheerio.load(entry.content);
+    $('img').each(function() {
+        var src = 'https://what-if.xkcd.com' + $(this).attr('src');
+        $(this).attr('src', src);
     });
+    $('.refnum').addClass('mdl-color-text--accent');
+    var question = $('p#question').clone();
+    question.find('.ref').remove();
+    entry.content = $.html();
+    entry.question = question.html();
+    entry.attribute = $('p#attribute').text();
+    entry.originalLink = entry.link;
+    entry.link = entry.link.replace('http://what-if.xkcd.com', 'entry');
+    entry.id = parseInt(entry.link.match(/\/(\d+)\//)[1]);
+    return entry;
 }
 
-/* GET home page. */
+readFeed('http://what-if.xkcd.com/feed.atom', function(err, articles) {
+    if(err) throw err;
+    entries = articles.map(modifyEntry); // .reduce(indexById, {});
+});
+
 router.get('/', function(req, res, next) {
-    parseFeed('http://what-if.xkcd.com/feed.atom')
-    res.render('index', { title: 'What If?' });
+    res.render('index.html');
 });
 
 router.get('/feed', function(req, res, next) {
+    // console.log("Returning " + Object.keys(entries).length + " entries");
+    console.log("Returning " + entries.length + " entries");
     res.json(entries);
 });
 
-router.get('/entry/:id', function(req, res, next) {
-    var id = parseInt(req.params.id);
-    var entry;
-    for(var i = 0, len = entries.length; i < len; i++) {
-        var e = entries[i];
-        if(e.id === id) {
-            entry = e;
-            break;
-        }
-    };
-    if(entry) {
-        res.render('partials/entry', {
-            title: entry.title,
-            entry: entry,
-            backButton: true
-        });
-    }
-    else {
-        var err = new Error();
-        err.status = 404;
-        err.message = 'No article found for requested id';
-        next(err);
-    }
-});
+router.get('*', function(req, res, next) {
+    console.log("Falling back to index");
+    res.render('index.html');
+})
 
 module.exports = router;

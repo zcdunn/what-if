@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="what-if">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="Progressive Web App (PWA) for what-if.xkcd.com">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-        <title>{{title}}</title>
+        <base href="/" />
+        <title ng-bind="header"></title>
 
         <!-- Add to homescreen for Chrome on Android -->
         <meta name="mobile-web-app-capable" content="yes">
@@ -20,6 +21,11 @@
         <link rel="manifest" href="/manifest.json">
         <link rel="shortcut icon" href="/favicon.ico">
 
+        <script src="/javascripts/jquery-1.8.0.min.js"></script>
+        <script src="/javascripts/angular.min.js"></script>
+        <script src="/javascripts/angular-sanitize.min.js"></script>
+        <script src="/javascripts/angular-route.min.js"></script>
+        <script src="/javascripts/angular-animate.min.js"></script>
         <link href="/dialog-polyfill/dialog-polyfill.css" rel="stylesheet">
         <link href="/stylesheets/material-fonts.css" rel="stylesheet">
         <link href="/stylesheets/material-icons.css" rel="stylesheet">
@@ -27,26 +33,42 @@
         <link href="/stylesheets/mdl.css" rel="stylesheet">
         <link href="/stylesheets/style.css" rel="stylesheet">
     </head>
-    <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
-        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-            <header class="mdl-layout__header mdl-color--primary">
+    <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base" ng-controller="FeedController">
+        <div class="mdl-layout mdl-js-layout mdl-layout-waterfall">
+            <header class="mdl-layout__header mdl-layout__header--waterfall mdl-color--primary">
                 <div class="mdl-layout__header-row">
-                    {{#if backButton}}
-                        <div class="demo-back">
-                            <a href="/" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" title="go back" role="button">
-                                <i class="material-icons" role="presentations">arrow_back</i>
-                            </a>
-                        </div>
-                    {{/if}}
-                    <span class="mdl-layout-title">{{title}}</span>
+                    <div class="demo-back" ng-show="showBackButton">
+                        <!--<a ng-href="/" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" title="go back" role="button">-->
+                        <a ng-click="goBack()" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" title="go back" role="button">
+                            <i class="material-icons" role="presentations">arrow_back</i>
+                        </a>
+                    </div>
+                    <span class="mdl-layout-title">What If?</span>
                     <div class="mdl-layout-spacer"></div>
                     <nav class="mdl-navigation mdl-layout--large-screen-only">
                         <a href="https://what-if.xkcd.com" class="mdl-navigation__link" target="_blank">What If? Official Site</a>
                         <a href="https://whatif.xkcd.com/book/" class="mdl-navigation__link" target="_blank">Buy the book!</a>
                     </nav>
                 </div>
+                <div class="mdl-layout__header-row" ng-show="isSearchActive">
+                    <div class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" title="close search" role="button" ng-click="deactivateSearch()">
+                        <i class="material-icons" role="presentations">close</i>
+                    </div>
+                    <div class="mdl-layout-spacer"></div>
+                    <div class="mdl-textfield mdl-js-textfield">
+                        <input class="mdl-textfield__input" type="text" name="search" id="search" ng-model="searchQuery" focus="true" />
+                        <label class="mdl-textfield__label" for="search">Enter search terms</label>
+                    </div>
+                </div>
             </header>
-            {{{body}}}
+            <main class="mdl-layout__content">
+                <div class="mdl-layout__tab-panel is-active" id="overview" ng-view autoscroll>
+                </div>
+            </main>
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" id="searchFAB" ng-click="activateSearch()">
+                <i class="material-icons" role="presentation">search</i>
+                <span class="visuallyhidden">Search</span>
+            </button>
             <footer class="mdl-mega-footer">
                 <div class="mdl-mega-footer--middle-section">
                     <div class="mdl-mega-footer--drop-down-section">
@@ -79,12 +101,12 @@
                     </ul>
                 </div>
             </footer>
-            {{!
+            <!--
             <div class="mdl-snackbar mdl-js-snackbar">
                 <div class="mdl-snackbar__text"></div>
                 <button type="button" class="mdl-snackbar__action"></button>
             </div>
-            }}
+            -->
         </div>
         <dialog class="mdl-dialog">
             <div class="mdl-dialog__title">
@@ -99,10 +121,7 @@
             </div>
         </dialog>
         <script src="/javascripts/material.min.js"></script>
-        <script src="/javascripts/jquery-1.8.0.min.js"></script>
-        <script src="/javascripts/handlebars.runtime.min.js"></script>
         <script src="/dialog-polyfill/dialog-polyfill.js"></script>
-        <script src="/javascripts/card.js"></script>
         <script src="/javascripts/script.js"></script>
     </body>
 </html>
