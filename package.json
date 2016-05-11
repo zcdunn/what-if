@@ -18,6 +18,20 @@
     "fs": "0.0.2",
     "morgan": "~1.6.1",
     "request": "^2.65.0",
-    "serve-favicon": "~2.3.0"
-  }
+    "serve-favicon": "~2.3.0",
+    "sw-toolbox": "^3.1.1"
+  },
+  "description": "A Progressive Web App for Randall Munroe's [What If?](https://what-if.xkcd.com)",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zcdunn/what-if.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zcdunn/what-if/issues"
+  },
+  "homepage": "https://github.com/zcdunn/what-if#readme"
 }

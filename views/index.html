@@ -38,8 +38,7 @@
             <header class="mdl-layout__header mdl-layout__header--waterfall mdl-color--primary">
                 <div class="mdl-layout__header-row">
                     <div class="demo-back" ng-show="showBackButton">
-                        <!--<a ng-href="/" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" title="go back" role="button">-->
-                        <a ng-click="goBack()" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" title="go back" role="button">
+                        <a ng-href="/" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" title="go back" role="button">
                             <i class="material-icons" role="presentations">arrow_back</i>
                         </a>
                     </div>
@@ -62,13 +61,10 @@
                 </div>
             </header>
             <main class="mdl-layout__content">
+                <!-- Angular View -->
                 <div class="mdl-layout__tab-panel is-active" id="overview" ng-view autoscroll>
                 </div>
             </main>
-            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" id="searchFAB" ng-click="activateSearch()">
-                <i class="material-icons" role="presentation">search</i>
-                <span class="visuallyhidden">Search</span>
-            </button>
             <footer class="mdl-mega-footer">
                 <div class="mdl-mega-footer--middle-section">
                     <div class="mdl-mega-footer--drop-down-section">

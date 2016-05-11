@@ -23,12 +23,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/dialog-polyfill', express.static(path.join(__dirname, 'node_modules', 'dialog-polyfill')));
+app.use('/sw-toolbox', express.static(path.join(__dirname, 'node_modules', 'sw-toolbox')));
 app.use('/partials', express.static(path.join(__dirname, 'views', 'partials')));
 app.use('/', routes);
-app.get(function(req, res, next) {
-    if(req.accepts('html')) res.sendFile(path.join(__dirname, 'views', 'index.html'));
-    else next();
-});
 app.use(errorHandling.errorHandler(env));
 
 module.exports = app;

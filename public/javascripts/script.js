@@ -88,16 +88,17 @@ angular.module('what-if', [ 'ngSanitize', 'ngRoute', 'ngAnimate' ])
         console.log("FeedController handling request");
         $rootScope.header = "What If?"
         $rootScope.showBackButton = false;
+        $rootScope.isSearchActive = false;
 
         $scope.activateSearch = function() {
-            $scope.isSearchActive = true;
+            $rootScope.isSearchActive = true;
             $timeout(function() {
                 angular.element('#search').focus();
             });
         };
 
         $scope.deactivateSearch = function() {
-            $scope.isSearchActive = false;
+            $rootScope.isSearchActive = false;
             $scope.searchQuery = '';
             angular.element('#search')
                 .removeClass('ng-touched ng-dirty')
@@ -105,11 +106,13 @@ angular.module('what-if', [ 'ngSanitize', 'ngRoute', 'ngAnimate' ])
                 .parent().removeClass('is-dirty');
         }
 
-        $http.get("feed").then(function(response) {
-            console.log("$http.get response:", response);
-            $scope.entries = response.data;
-            entriesService.setEntries(response.data);
-        });
+        if(!$scope.entries) {
+            $http.get("feed").then(function(response) {
+                console.log("$http.get response:", response);
+                $scope.entries = response.data;
+                entriesService.setEntries(response.data);
+            });
+        }
     })
     .controller('ArticleController', function($rootScope, $scope, $routeParams, $location, entriesService) {
         var id = $routeParams.id;
@@ -122,8 +125,4 @@ angular.module('what-if', [ 'ngSanitize', 'ngRoute', 'ngAnimate' ])
             $rootScope.showBackButton = true;
         }
         else $location.path('/');
-
-        $scope.goBack = function() {
-            window.history.back();
-        }
     });
